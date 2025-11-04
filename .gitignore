@@ -1,0 +1,68 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+.venv
+
+# Blender
+*.blend1
+*.blend2
+*.blend3
+*.blend4
+*.blend5
+*.blend6
+*.blend7
+*.blend8
+*.blend9
+*.blend10
+
+# Render Output
+renders/
+output/
+*.png
+*.jpg
+*.jpeg
+*.exr
+*.hdr
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Logs
+*.log
+logs/
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+
+# Documentation (old files - cleanup)
+ANLEITUNG.md
+BRZI_POCETAK.md
+QUICKSTART.txt
+CURSOR_REFACTOR_GUIDE.md
+DEPLOYMENT.md
+GITHUB_DEPLOYMENT.md
+GITHUB_SETUP.md
+GITHUB_SETUP_FINAL.md
+ONLINE_DEPLOYMENT.md
+PROJEKT_BEWERTUNG.md
+PROJEKT_STRUKTUR.md
+README_FINAL.md
+STRATESKA_ANALIZA.md
+_config.yml

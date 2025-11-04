@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="bs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interior Scene Generator</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            max-width: 600px;
+            width: 100%;
+            padding: 50px 40px;
+            text-align: center;
+        }
+        
+        h1 {
+            font-size: 2.5em;
+            color: #2d3748;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            color: #718096;
+            font-size: 1.1em;
+            margin-bottom: 40px;
+        }
+        
+        .steps {
+            text-align: left;
+            margin: 30px 0;
+        }
+        
+        .step {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            padding: 20px;
+            background: #f7fafc;
+            border-radius: 12px;
+            margin-bottom: 15px;
+        }
+        
+        .step-num {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2em;
+            flex-shrink: 0;
+        }
+        
+        .step-content {
+            flex: 1;
+        }
+        
+        .step-content h3 {
+            color: #2d3748;
+            margin-bottom: 5px;
+            font-size: 1.1em;
+        }
+        
+        .step-content p {
+            color: #718096;
+            font-size: 0.9em;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 15px 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 1.1em;
+            border: none;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            width: 100%;
+            margin-top: 10px;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+        }
+        
+        .btn-success {
+            background: #28a745;
+        }
+        
+        .btn-success:hover {
+            box-shadow: 0 10px 25px rgba(40, 167, 69, 0.4);
+        }
+        
+        .success {
+            background: #d4edda;
+            border: 2px solid #28a745;
+            color: #155724;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+            display: none;
+        }
+        
+        .success.show {
+            display: block;
+        }
+        
+        .info {
+            background: #e7f3ff;
+            border-left: 4px solid #2196F3;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            text-align: left;
+            font-size: 0.9em;
+            color: #2c5282;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🏠 Interior Generator</h1>
+        <p class="subtitle">Fotorealističan render za 3 koraka</p>
+        
+        <div class="success" id="success">✅ Script preuzet! Sada u Blender-u: File → Open → Run Script → F12</div>
+        
+        <div class="steps">
+            <div class="step">
+                <div class="step-num">1</div>
+                <div class="step-content">
+                    <h3>Preuzmi Blender</h3>
+                    <p>blender.org/download/ (5 min)</p>
+                    <a href="https://www.blender.org/download/" target="_blank" class="btn">📥 Download</a>
+                </div>
+            </div>
+            
+            <div class="step">
+                <div class="step-num">2</div>
+                <div class="step-content">
+                    <h3>Preuzmi Script</h3>
+                    <p>Klikni ispod (auto-download)</p>
+                    <button onclick="downloadScript()" class="btn btn-success">📥 Preuzmi Script</button>
+                </div>
+            </div>
+            
+            <div class="step">
+                <div class="step-num">3</div>
+                <div class="step-content">
+                    <h3>U Blender-u</h3>
+                    <p>Scripting → Open → Run Script → F12</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="info">
+            <strong>Rezultat:</strong> Fotorealističan render (1920x1080px) za 10-15 minuta. 
+            Besplatno, legalno, ista kvaliteta kao Corona.
+        </div>
+    </div>
+    
+    <script>
+        function downloadScript() {
+            const script = `"""Blender Script: Interior Scene Generator\nKreira kompletnu scenu automatski.\n"""\n\nimport bpy\n\n# Reset\nbpy.ops.object.select_all(action='SELECT')\nbpy.ops.object.delete()\n\n# Material helper\ndef mat(name, color, metallic=0, roughness=0.5, transmission=0):\n    m = bpy.data.materials.new(name=name)\n    m.use_nodes = True\n    if 'Principled BSDF' not in m.node_tree.nodes:\n        bsdf = m.node_tree.nodes.new('ShaderNodeBsdfPrincipled')\n    else:\n        bsdf = m.node_tree.nodes['Principled BSDF']\n    bsdf.inputs['Base Color'].default_value = (*color, 1)\n    bsdf.inputs['Metallic'].default_value = metallic\n    bsdf.inputs['Roughness'].default_value = roughness\n    bsdf.inputs['Transmission'].default_value = transmission\n    return m\n\n# Create materials\nwood = mat('Wood', (0.25, 0.15, 0.1), 0, 0.7)\nfabric = mat('Fabric', (0.9, 0.85, 0.75), 0, 0.9)\nmetal = mat('Metal', (0.7, 0.7, 0.75), 1, 0.1)\nglass = mat('Glass', (0.9, 0.95, 1.0), 0, 0, 1)\nwall = mat('Wall', (0.95, 0.95, 0.95), 0, 0.8)\n\n# Room\nbpy.ops.mesh.primitive_plane_add(size=10, location=(0,0,0))\nbpy.context.active_object.name = 'Floor'\nbpy.context.active_object.data.materials.append(wood)\n\nfor pos, rot, name in [\n    ((0,-5,2.5), (1.5708,0,0), 'Back'),\n    ((-5,0,2.5), (1.5708,0,1.5708), 'Left'),\n    ((5,0,2.5), (1.5708,0,1.5708), 'Right'),\n    ((0,0,5), (3.14159,0,0), 'Ceiling')\n]:\n    bpy.ops.mesh.primitive_plane_add(size=10, location=pos)\n    obj = bpy.context.active_object\n    obj.name = name + '_Wall'\n    obj.rotation_euler = rot\n    obj.data.materials.append(wall)\n\n# Sofa\nfor scale, loc, name in [\n    ((1.5,0.8,0.4), (0,-2,0.4), 'Base'),\n    ((1.5,0.2,0.6), (0,-2.2,1.0), 'Back'),\n    ((0.2,0.8,0.5), (-1.5,-2,0.6), 'Arm_L'),\n    ((0.2,0.8,0.5), (1.5,-2,0.6), 'Arm_R')\n]:\n    bpy.ops.mesh.primitive_cube_add(size=2, location=loc)\n    obj = bpy.context.active_object\n    obj.name = 'Sofa_' + name\n    obj.scale = scale\n    obj.data.materials.append(fabric)\n\n# Table\nbpy.ops.mesh.primitive_cube_add(size=2, location=(0,-3.5,0.8))\nbpy.context.active_object.name = 'Table_Top'\nbpy.context.active_object.scale = (1, 0.6, 0.05)\nbpy.context.active_object.data.materials.append(glass)\n\nfor x, y in [(-0.8,-3.7), (0.8,-3.7), (-0.8,-3.3), (0.8,-3.3)]:\n    bpy.ops.mesh.primitive_cylinder_add(radius=0.05, depth=0.8, location=(x,y,0.4))\n    bpy.context.active_object.data.materials.append(metal)\n\n# Lighting\nbpy.ops.object.light_add(type='AREA', location=(0,2,4))\nbpy.context.active_object.data.energy = 100\nbpy.context.active_object.data.size = 3\nbpy.context.active_object.rotation_euler = (-0.785, 0, 0)\n\nbpy.ops.object.light_add(type='AREA', location=(-3,1,3))\nbpy.context.active_object.data.energy = 50\nbpy.context.active_object.data.size = 2\n\n# World\nworld = bpy.context.scene.world\nworld.use_nodes = True\nbg = world.node_tree.nodes.new('ShaderNodeBackground')\nbg.inputs['Color'].default_value = (0.8, 0.85, 0.9, 1)\nbg.inputs['Strength'].default_value = 0.5\nif 'World Output' not in world.node_tree.nodes:\n    output = world.node_tree.nodes.new('ShaderNodeOutputWorld')\nelse:\n    output = world.node_tree.nodes['World Output']\nworld.node_tree.links.new(bg.outputs['Background'], output.inputs['Surface'])\n\n# Camera\nbpy.ops.object.camera_add(location=(3,-6,1.6))\ncamera = bpy.context.active_object\ncamera.rotation_euler = (1.4, 0, 0.785)\nbpy.context.scene.camera = camera\ncamera.data.lens = 35\n\n# Render setup\nscene = bpy.context.scene\nscene.render.engine = 'CYCLES'\nscene.render.resolution_x, scene.render.resolution_y = 1920, 1080\nscene.cycles.samples = 256\nscene.cycles.use_denoising = True\nscene.cycles.denoiser = 'OPENIMAGEDENOISE'\nscene.render.image_settings.file_format = 'PNG'\n\nprint('=' * 50)\nprint('✓ Scena kreirana!')\nprint('Pritisni F12 za render.')\nprint('=' * 50)\n`;
+            
+            const blob = new Blob([script], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'create_interior_scene.py';
+            a.click();
+            URL.revokeObjectURL(url);
+            
+            document.getElementById('success').classList.add('show');
+        }
+    </script>
+</body>
+</html>
+
